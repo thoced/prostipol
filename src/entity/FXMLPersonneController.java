@@ -30,9 +30,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -78,6 +81,10 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
     public Button m_buttonAdd;
     @FXML
     public Button m_buttonDel;
+    @FXML
+    private Button m_buttonUpdate; 
+    @FXML
+    public ContextMenu m_context;
     
     
     private ModelListPersonne model; 
@@ -102,15 +109,59 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
             m_columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
             m_buttonAdd.setOnAction(this);
             m_buttonDel.setOnAction(this);
+            m_buttonUpdate.setOnAction(this);
 
+            
+            // initialisation du contextmenu
+            m_context = new ContextMenu();
+            MenuItem itemModifier = new MenuItem("Modifier la fiche personne");
+            itemModifier.setOnAction((new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                  FXMLPersonneController.this.OnModifierFiche();
+                }
+            }));
+            MenuItem itemSuppression = new MenuItem("Supprimer la fiche");
+            itemSuppression.setOnAction((new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                  FXMLPersonneController.this.OnDeleteFiche();
+                }
+            }));
+            m_context.getItems().addAll(itemModifier,itemSuppression);
+            
+           m_tablePersonne.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                @Override
+                public void handle(ContextMenuEvent event) {
+                   m_context.show(m_tablePersonne.getScene().getWindow(),event.getScreenX(),event.getScreenY());
+                }
+            }); 
+           
+           // m_context.show(m_tablePersonne.getScene().getWindow());
     }    
 
-    @FXML
-    public void OnMouseClick(MouseEvent event){
-      
-        if(event.getButton() == MouseButton.SECONDARY){
-             System.out.println("click");
-            ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
+    public void OnDeleteFiche(){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Suppression");
+                    alert.setContentText("Etes-vous sûr de vouloir supprimer cette personne ?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(result.get() == ButtonType.CANCEL)
+                        return;
+            
+                
+                if(m_tablePersonne.getSelectionModel().getSelectedItem() != null){
+                   ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
+                   if(personne != null){
+                       model.delete(personne);
+                       model.selectAll();
+                       m_tablePersonne.refresh();
+                   }
+                }
+    }
+  
+    public void OnModifierFiche()
+    {
+        ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
             if(personne != null){
                 try {
                     // ouverture de la fenetre de mofication
@@ -134,7 +185,12 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                     Logger.getLogger(FXMLPersonneController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
+    }
+    
+    @FXML
+    public void OnMouseClick(MouseEvent event){
+      
+       
     }
     
     @Override
@@ -166,24 +222,11 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                     Logger.getLogger(FXMLPersonneController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else if(event.getSource() == m_buttonDel){
-                
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Suppression");
-                    alert.setContentText("Etes-vous sûr de vouloir supprimer cette personne ?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if(result.get() == ButtonType.CANCEL)
-                        return;
-            
-                
-                if(m_tablePersonne.getSelectionModel().getSelectedItem() != null){
-                   ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
-                   if(personne != null){
-                       model.delete(personne);
-                       model.selectAll();
-                       m_tablePersonne.refresh();
-                   }
-                }
+                this.OnDeleteFiche();      
+            }else if(event.getSource() == m_buttonUpdate){
+                this.OnModifierFiche();
             }
+            
         }
     }
 

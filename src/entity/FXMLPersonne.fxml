@@ -8,7 +8,7 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="679.0" prefWidth="1092.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entity.FXMLPersonneController">
    <center>
-      <TableView fx:id="m_tablePersonne" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#OnMouseClick" prefHeight="639.0" prefWidth="903.0">
+      <TableView fx:id="m_tablePersonne" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="639.0" prefWidth="903.0">
         <columns>
           <TableColumn fx:id="m_columnNom" prefWidth="126.99996948242188" text="Nom" />
           <TableColumn fx:id="m_columnPrenom" minWidth="7.0" prefWidth="111.0" text="Prenom" />
@@ -27,6 +27,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <Button fx:id="m_buttonAdd" mnemonicParsing="false" text="Ajouter" />
+            <Button fx:id="m_buttonUpdate" mnemonicParsing="false" text="Modifier" />
             <Button fx:id="m_buttonDel" mnemonicParsing="false" text="Supprimer" />
         </items>
       </ToolBar>
