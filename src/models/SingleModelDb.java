@@ -19,14 +19,24 @@ public class SingleModelDb {
     protected static SingleModelDb _instance = null;
     
     protected ConnectionSQL _sql;
+    
+    // Model
+    protected ModelListPersonne _modelListPersonne;
 
     public ConnectionSQL getSql() {
         return _sql;
     }
 
+    public ModelListPersonne getModelListPersonne() {
+        return _modelListPersonne;
+    }
+
     protected SingleModelDb(){
         try {
             _sql = new ConnectionSQL();
+            // modelListPersonne
+            _modelListPersonne = new ModelListPersonne();
+            
         } catch (SQLException ex) {
             Logger.getLogger(SingleModelDb.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

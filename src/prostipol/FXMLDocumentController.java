@@ -33,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import models.ModelListPersonne;
 import models.SingleModelDb;
 
 /**
@@ -56,16 +57,21 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    
+        
+     // reception nombre total de personne
+     ModelListPersonne model = SingleModelDb.getInstance().getModelListPersonne();
+     int totalPersonne = model.getTotalPersonnes();
+     
      ObservableList<String> items = FXCollections.observableArrayList();
      items.add("Personnes");
      items.add("Lieux");
-     
-    
+
      TreeItem<String> rootItem = new TreeItem<String>("ProstiPol");
      TreeItem<String> itemEntity = new TreeItem<String>("Entitées");
      TreeItem<String> itemBooking = new TreeItem<String>("Réservations");
      
-     TreeItem<String> item1 = new TreeItem<String>("Personnes");
+     TreeItem<String> item1 = new TreeItem<String>("Personnes (" + totalPersonne + ")");
      TreeItem<String> item2 = new TreeItem<String>("Lieux");
      
      rootItem.setExpanded(true);
@@ -85,10 +91,7 @@ public class FXMLDocumentController implements Initializable {
             // test
             BorderPane border = FXMLLoader.load(getClass().getResource("/entity/FXMLPersonne.fxml"));
             m_splitVertical.getItems().set(0,border);
-            
-           
-            
-            
+
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -40,12 +40,8 @@ import models.ModelStatut;
  */
 public class DialogPersonneViewController implements Initializable {
 
-    private ModelListPersonne m_mlp;
-    
-    public enum MODE {INSERT,UPDATE};
-    
-    private MODE m_mode = MODE.INSERT;
-    
+    private ModelPersonne m_modelPersonne;
+      
     @FXML
     private BorderPane m_rootPane;
     @FXML
@@ -89,25 +85,30 @@ public class DialogPersonneViewController implements Initializable {
         m_comboStatut.getSelectionModel().selectFirst();
     }
 
-    public void setModel(ModelListPersonne mlp){
-        this.m_mlp = mlp;
+    public ModelPersonne getmModelPersonne() {
+        return m_modelPersonne;
+    }
+
+    public void setModelPersonne(ModelPersonne m_modelPersonne) {
+        this.m_modelPersonne = m_modelPersonne;
     }
 
     @FXML
     public void OnSauvegarde(){
         
-         ModelListPersonne model = new ModelListPersonne();
-         ModelPersonne personne = new ModelPersonne();
-         personne.setNom(m_textNom.getText());
-         personne.setPrenom(m_textPrenom.getText());
-         personne.setDateNaissance(m_dateNaissance.getValue());
-         personne.setDateEncodage(Timestamp.valueOf(LocalDateTime.now()));
-         personne.setDateUpdate(Timestamp.valueOf(LocalDateTime.now()));
-         personne.setSexe((ModelSexe)m_comboSexe.getSelectionModel().getSelectedItem());
-         personne.setSurnom(m_textSurnom.getText());
-         personne.setNationalite((ModelPays)m_comboNationalite.getSelectionModel().getSelectedItem());
-         personne.setOrigine((ModelPays)m_comboOrigine.getSelectionModel().getSelectedItem());
-         personne.setStatut((ModelStatut)m_comboStatut.getSelectionModel().getSelectedItem());
+         if(m_modelPersonne == null)
+             return;
+         
+         m_modelPersonne.setNom(m_textNom.getText());
+         m_modelPersonne.setPrenom(m_textPrenom.getText());
+         m_modelPersonne.setDateNaissance(m_dateNaissance.getValue());
+         m_modelPersonne.setDateEncodage(Timestamp.valueOf(LocalDateTime.now()));
+         m_modelPersonne.setDateUpdate(Timestamp.valueOf(LocalDateTime.now()));
+         m_modelPersonne.setSexe((ModelSexe)m_comboSexe.getSelectionModel().getSelectedItem());
+         m_modelPersonne.setSurnom(m_textSurnom.getText());
+         m_modelPersonne.setNationalite((ModelPays)m_comboNationalite.getSelectionModel().getSelectedItem());
+         m_modelPersonne.setOrigine((ModelPays)m_comboOrigine.getSelectionModel().getSelectedItem());
+         m_modelPersonne.setStatut((ModelStatut)m_comboStatut.getSelectionModel().getSelectedItem());
          
          // verif par rapport à la date
          if(m_dateNaissance.getValue() == null){
@@ -117,12 +118,23 @@ public class DialogPersonneViewController implements Initializable {
              alert.showAndWait();
              return;
          }
-             
-        if(m_mode == MODE.INSERT)
-            model.insert(personne);
-        else if(m_mode == MODE.UPDATE)
-            model.update(personne);
-       
+         
+         if(m_textNom.getText() == null || m_textNom.getText().length() == 0){
+             Alert alert = new Alert(AlertType.ERROR);
+             alert.setTitle("Nom");
+             alert.setContentText("Un nom doit être indiqué");
+             alert.showAndWait();
+             return;
+         }
+         
+         if(m_textPrenom.getText() == null || m_textPrenom.getText().length() == 0){
+             Alert alert = new Alert(AlertType.ERROR);
+             alert.setTitle("Prenom");
+             alert.setContentText("Un prénom doit être indiqué");
+             alert.showAndWait();
+             return;
+         }
+ 
         // fermeture
         this.OnCancel();
     }
@@ -134,15 +146,4 @@ public class DialogPersonneViewController implements Initializable {
         m_rootPane.getScene().getWindow().hide();
     }
 
-    public MODE getM_mode() {
-        return m_mode;
-    }
-
-    public void setM_mode(MODE m_mode) {
-        this.m_mode = m_mode;
-    }
-   
-    
-  
-    
 }

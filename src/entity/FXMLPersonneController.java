@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -71,6 +74,9 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
     
     @FXML
     public Button m_buttonAdd;
+    @FXML
+    public Button m_buttonDel;
+    
     
     private ModelListPersonne model; 
     /**
@@ -79,7 +85,7 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-            model = new ModelListPersonne();
+            model = SingleModelDb.getInstance().getModelListPersonne();
             model.selectAll();
             m_tablePersonne.setItems(model.getOb());
             m_columnNom.setCellValueFactory(cellData->cellData.getValue().nomProperty());
@@ -93,6 +99,7 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
             m_columnDateUpdate.setCellValueFactory(cellData->cellData.getValue().dateUpdateProperty());
             m_columnStatut.setCellValueFactory(cellData->cellData.getValue().statutProperty());
             m_buttonAdd.setOnAction(this);
+            m_buttonDel.setOnAction(this);
 
     }    
 
@@ -105,21 +112,41 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/entity/DialogPersonneView.fxml"));
                     BorderPane pane = loader.load();
                     DialogPersonneViewController controller = loader.getController();
+                    ModelPersonne modelPersonne = new ModelPersonne();
                     if(controller != null){
-                        controller.setModel(this.model);
-                        controller.setM_mode(DialogPersonneViewController.MODE.INSERT);
+                        controller.setModelPersonne(modelPersonne);
                     }
                     Scene scene = new Scene(pane);
                     Stage stage = new Stage();
                     stage.setScene(scene);
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.showAndWait();
+                    // ajout du modelPersonne dans la Db
+                    model.insert(modelPersonne);
                     // refresh
                     model.selectAll();
                     m_tablePersonne.refresh();
                    
                 } catch (IOException ex) {
                     Logger.getLogger(FXMLPersonneController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(event.getSource() == m_buttonDel){
+                
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Suppression");
+                    alert.setContentText("Etes-vous sûr de vouloir supprimer cette personne ?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(result.get() == ButtonType.CANCEL)
+                        return;
+            
+                
+                if(m_tablePersonne.getSelectionModel().getSelectedItem() != null){
+                   ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
+                   if(personne != null){
+                       model.delete(personne);
+                       model.selectAll();
+                       m_tablePersonne.refresh();
+                   }
                 }
             }
         }

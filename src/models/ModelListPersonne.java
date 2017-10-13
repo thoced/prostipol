@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -29,6 +30,25 @@ public class ModelListPersonne extends ModelContainerBase{
         return ob;
     }
 
+    public int getTotalPersonnes()
+    {
+        int total = 0;
+        try {
+            Connection con = SingleModelDb.getInstance().getSql().getCon();
+            String sql = "select COUNT(id) AS total from t_personnes";
+            Statement st = con.createStatement();
+            ResultSet result = st.executeQuery(sql);
+            if(result != null){
+                result.first();
+                total = result.getInt("total");
+            }
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(ModelListPersonne.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
+    }
+    
     @Override
     public void insert(ModelBase model) {
         ModelPersonne mp = (ModelPersonne) model;
@@ -55,7 +75,19 @@ public class ModelListPersonne extends ModelContainerBase{
 
     @Override
     public void delete(ModelBase model) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if(model != null){
+          ModelPersonne personne = (ModelPersonne)model;
+           try {
+               Connection con = SingleModelDb.getInstance().getSql().getCon();
+               String sql = "delete from t_personnes where id = ?";
+               PreparedStatement ps = con.prepareStatement(sql);
+               ps.setInt(1,personne.getId());
+               ps.executeUpdate();
+           } catch (SQLException ex) {
+               Logger.getLogger(ModelListPersonne.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+       }
     }
 
     @Override
@@ -68,7 +100,10 @@ public class ModelListPersonne extends ModelContainerBase{
         ob.clear();
          try {
             Connection con = SingleModelDb.getInstance().getSql().getCon();
-            String sql = "select * from t_personnes INNER JOIN t_statut ON t_personnes.ref_statut = t_statut.id INNER JOIN t_sexe ON t_personnes.ref_sexe = t_sexe.id INNER JOIN t_pays ON t_personnes.ref_nationalite = t_pays.id AND t_personnes.ref_origine = t_pays.id";
+            String sql = "select * from t_personnes INNER JOIN t_sexe ON t_personnes.ref_sexe = t_sexe.id "
+                    +                              "INNER JOIN t_statut ON t_personnes.ref_statut = t_statut.id "
+                    +                              "INNER JOIN t_pays A1 ON t_personnes.ref_nationalite = A1.id "
+                    +                              "INNER JOIN t_pays A2 ON t_personnes.ref_origine = A2.id";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet result = ps.executeQuery();
             while(result.next()){
@@ -84,11 +119,11 @@ public class ModelListPersonne extends ModelContainerBase{
                 mp.setSurnom(result.getString("surnom"));
                 ModelPays pn = new ModelPays();
                 pn.setId(result.getInt("t_personnes.ref_nationalite"));
-                pn.setPays(result.getString("t_pays.nom_en_gb"));
+                pn.setPays(result.getString("A1.nom_en_gb"));
                 mp.setNationalite(pn);
                 ModelPays po = new ModelPays();
                 po.setId(result.getInt("t_personnes.ref_origine"));
-                po.setPays(result.getString("t_pays.nom_en_gb"));
+                po.setPays(result.getString("A2.nom_en_gb"));
                 mp.setOrigine(po);
                 mp.setDateEncodage(result.getTimestamp("date_encodage"));
                 mp.setDateUpdate(result.getTimestamp("date_update"));
@@ -101,6 +136,8 @@ public class ModelListPersonne extends ModelContainerBase{
         } catch (SQLException ex) {
             Logger.getLogger(ModelListPersonne.class.getName()).log(Level.SEVERE, null, ex);
         }
+         
+         System.out.println(ob.size());
     }
     
 }
