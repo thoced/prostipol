@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
@@ -34,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import models.ModelListPersonne;
+import models.ModelPersonne;
 import models.SingleModelDb;
 
 /**
@@ -57,21 +59,14 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    
-    
-     // reception nombre total de personne
-     ModelListPersonne model = SingleModelDb.getInstance().getModelListPersonne();
-     int totalPersonne = model.getTotalPersonnes();
-     
+
      ObservableList<String> items = FXCollections.observableArrayList();
      items.add("Personnes");
      items.add("Lieux");
-
      TreeItem<String> rootItem = new TreeItem<String>("ProstiPol");
      TreeItem<String> itemEntity = new TreeItem<String>("Entitées");
      TreeItem<String> itemBooking = new TreeItem<String>("Réservations");
-     
-     TreeItem<String> item1 = new TreeItem<String>("Personnes (" + totalPersonne + ")");
+     TreeItem<String> item1 = new TreeItem<String>("Personnes ()");
      TreeItem<String> item2 = new TreeItem<String>("Lieux");
      
      rootItem.setExpanded(true);
@@ -83,6 +78,15 @@ public class FXMLDocumentController implements Initializable {
      itemEntity.getChildren().add(item2);
      
      itemBooking.setExpanded(true);
+     
+     // listener
+       SingleModelDb.getInstance().getModelListPersonne().getOb().addListener(new ListChangeListener<ModelPersonne>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends ModelPersonne> c) {
+              item1.setValue("Personnes (" + c.getList().size() + ")");
+            }
+        });
+     
      
      m_treeView.setRoot(rootItem);
      
@@ -105,7 +109,7 @@ public class FXMLDocumentController implements Initializable {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-     
+        
     }    
     
     
