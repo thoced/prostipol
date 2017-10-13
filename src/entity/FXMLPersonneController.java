@@ -33,6 +33,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -103,6 +105,38 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
 
     }    
 
+    @FXML
+    public void OnMouseClick(MouseEvent event){
+      
+        if(event.getButton() == MouseButton.SECONDARY){
+             System.out.println("click");
+            ModelPersonne personne = (ModelPersonne) m_tablePersonne.getSelectionModel().getSelectedItem();
+            if(personne != null){
+                try {
+                    // ouverture de la fenetre de mofication
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/entity/DialogPersonneView.fxml"));
+                    BorderPane pane = loader.load();
+                    DialogPersonneViewController controller = loader.getController();
+                    if(controller != null){
+                        controller.setModelPersonne(personne);
+                    }
+                    Scene scene = new Scene(pane);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.showAndWait();
+                    if(controller.isSauvegarde())
+                        model.update(personne);
+                     // refresh
+                    model.selectAll();
+                    m_tablePersonne.refresh();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLPersonneController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
     @Override
     public void handle(ActionEvent event) {
        
@@ -122,7 +156,8 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.showAndWait();
                     // ajout du modelPersonne dans la Db
-                    model.insert(modelPersonne);
+                    if(controller.isSauvegarde())
+                        model.insert(modelPersonne);
                     // refresh
                     model.selectAll();
                     m_tablePersonne.refresh();

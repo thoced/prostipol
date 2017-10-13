@@ -58,7 +58,7 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     
-        
+    
      // reception nombre total de personne
      ModelListPersonne model = SingleModelDb.getInstance().getModelListPersonne();
      int totalPersonne = model.getTotalPersonnes();

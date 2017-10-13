@@ -7,7 +7,6 @@ package entity;
 
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -41,6 +40,8 @@ import models.ModelStatut;
 public class DialogPersonneViewController implements Initializable {
 
     private ModelPersonne m_modelPersonne;
+    
+    private boolean m_isSauvegarde = false;
       
     @FXML
     private BorderPane m_rootPane;
@@ -89,8 +90,24 @@ public class DialogPersonneViewController implements Initializable {
         return m_modelPersonne;
     }
 
+    public boolean isSauvegarde() {
+        return m_isSauvegarde;
+    }
+    
+    
+
     public void setModelPersonne(ModelPersonne m_modelPersonne) {
         this.m_modelPersonne = m_modelPersonne;
+        if(this.m_modelPersonne != null){
+            m_textNom.setText(this.m_modelPersonne.getNom());
+            m_textPrenom.setText(this.m_modelPersonne.getPrenom());
+            m_dateNaissance.setValue(this.m_modelPersonne.getDateNaissance());
+            m_comboSexe.setValue(this.m_modelPersonne.getSexe());
+            m_textSurnom.setText(this.m_modelPersonne.getSurnom());
+            m_comboNationalite.setValue(this.m_modelPersonne.getNationalite());
+            m_comboOrigine.setValue(this.m_modelPersonne.getOrigine());
+            m_comboStatut.setValue(this.m_modelPersonne.getStatut());
+        }
     }
 
     @FXML
@@ -135,6 +152,7 @@ public class DialogPersonneViewController implements Initializable {
              return;
          }
  
+        this.m_isSauvegarde = true;
         // fermeture
         this.OnCancel();
     }
@@ -143,6 +161,7 @@ public class DialogPersonneViewController implements Initializable {
     
     @FXML
     public void OnCancel(){
+       
         m_rootPane.getScene().getWindow().hide();
     }
 

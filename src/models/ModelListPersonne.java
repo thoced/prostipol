@@ -92,7 +92,34 @@ public class ModelListPersonne extends ModelContainerBase{
 
     @Override
     public void update(ModelBase model) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ModelPersonne personne = (ModelPersonne) model;
+        try {
+            Connection con = SingleModelDb.getInstance().getSql().getCon();
+            String sql = "update t_personnes set nom = ?,"
+                    + "prenom = ?,"
+                    + "ref_sexe = ?,"
+                    + "surnom = ?,"
+                    + "ref_nationalite = ?,"
+                    + "ref_origine = ?,"
+                    + "date_naissance = ?,"
+                    + "date_update = ?,"
+                    + "ref_statut = ? WHERE id = ?";
+                    
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, personne.getNom());
+            ps.setString(2, personne.getPrenom());
+            ps.setInt(3, personne.getSexe().getId());
+            ps.setString(4, personne.getSurnom());
+            ps.setInt(5, personne.getNationalite().getId());
+            ps.setInt(6, personne.getOrigine().getId());
+            ps.setDate(7, java.sql.Date.valueOf(personne.getDateNaissance()));
+            ps.setTimestamp(8, personne.getDateUpdate());
+            ps.setInt(9, personne.getStatut().getId());
+            ps.setInt(10, personne.getId());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ModelListPersonne.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
