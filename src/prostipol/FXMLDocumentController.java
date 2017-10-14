@@ -30,6 +30,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -55,6 +57,11 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     public AnchorPane m_lowerPane;
+    
+    private BorderPane m_panePersonnes;
+    
+    private TreeItem<String> m_itemsPersonne;
+    private TreeItem<String> m_itemsLieux;
   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -66,16 +73,16 @@ public class FXMLDocumentController implements Initializable {
      TreeItem<String> rootItem = new TreeItem<String>("ProstiPol");
      TreeItem<String> itemEntity = new TreeItem<String>("Entitées");
      TreeItem<String> itemBooking = new TreeItem<String>("Réservations");
-     TreeItem<String> item1 = new TreeItem<String>("Personnes ()");
-     TreeItem<String> item2 = new TreeItem<String>("Lieux");
+     m_itemsPersonne = new TreeItem<String>("Personnes ()");
+     m_itemsLieux = new TreeItem<String>("Lieux");
      
      rootItem.setExpanded(true);
      rootItem.getChildren().add(itemEntity);
      rootItem.getChildren().add(itemBooking);
      
      itemEntity.setExpanded(true);
-     itemEntity.getChildren().add(item1);
-     itemEntity.getChildren().add(item2);
+     itemEntity.getChildren().add(m_itemsPersonne);
+     itemEntity.getChildren().add(m_itemsLieux);
      
      itemBooking.setExpanded(true);
      
@@ -83,7 +90,7 @@ public class FXMLDocumentController implements Initializable {
        SingleModelDb.getInstance().getModelListPersonne().getOb().addListener(new ListChangeListener<ModelPersonne>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends ModelPersonne> c) {
-              item1.setValue("Personnes (" + c.getList().size() + ")");
+              m_itemsPersonne.setValue("Personnes (" + c.getList().size() + ")");
             }
         });
      
@@ -93,8 +100,8 @@ public class FXMLDocumentController implements Initializable {
         try {
             // upperpane
             // test
-            BorderPane border = FXMLLoader.load(getClass().getResource("/entity/FXMLPersonne.fxml"));
-            m_splitVertical.getItems().set(0,border);
+            m_panePersonnes = FXMLLoader.load(getClass().getResource("/entity/FXMLPersonne.fxml"));
+           
 
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,6 +118,23 @@ public class FXMLDocumentController implements Initializable {
        
         
     }    
+    
+    @FXML
+    public void OnMouClickOnTreeView(MouseEvent event){
+        if(event.getButton() == MouseButton.PRIMARY){
+            TreeItem itemSelected = (TreeItem) m_treeView.getSelectionModel().getSelectedItem();
+            if(itemSelected != null){               
+                if(itemSelected == m_itemsPersonne){
+                     m_splitVertical.getItems().clear();
+                     m_splitVertical.getItems().add(m_panePersonnes);
+                     m_splitVertical.getItems().add(new BorderPane());
+                }else if(itemSelected == m_itemsLieux){
+                     m_splitVertical.getItems().clear();
+                    
+                }
+            }
+        }
+    }
     
     
     

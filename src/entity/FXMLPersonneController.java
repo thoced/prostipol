@@ -35,9 +35,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -110,8 +114,11 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
             m_buttonAdd.setOnAction(this);
             m_buttonDel.setOnAction(this);
             m_buttonUpdate.setOnAction(this);
+            // initi button
+            Image imageAdd = new Image(getClass().getResourceAsStream("/ressources/imageAdd.png"));
+            m_buttonAdd.setGraphic(new ImageView(imageAdd));
+  
 
-            
             // initialisation du contextmenu
             m_context = new ContextMenu();
             MenuItem itemModifier = new MenuItem("Modifier la fiche personne");
