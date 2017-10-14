@@ -17,6 +17,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,6 +36,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewFocusModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -86,7 +89,9 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
     @FXML
     public Button m_buttonDel;
     @FXML
-    private Button m_buttonUpdate; 
+    private Button m_buttonUpdate;
+    @FXML
+    public Button m_buttonSearch;
     @FXML
     public ContextMenu m_context;
     
@@ -114,11 +119,10 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
             m_buttonAdd.setOnAction(this);
             m_buttonDel.setOnAction(this);
             m_buttonUpdate.setOnAction(this);
+            m_buttonSearch.setOnAction(this);
             // initi button
             Image imageAdd = new Image(getClass().getResourceAsStream("/ressources/imageAdd.png"));
             m_buttonAdd.setGraphic(new ImageView(imageAdd));
-  
-
             // initialisation du contextmenu
             m_context = new ContextMenu();
             MenuItem itemModifier = new MenuItem("Modifier la fiche personne");
@@ -143,8 +147,18 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                    m_context.show(m_tablePersonne.getScene().getWindow(),event.getScreenX(),event.getScreenY());
                 }
             }); 
-           
-           // m_context.show(m_tablePersonne.getScene().getWindow());
+          // initialisation du focus
+          m_tablePersonne.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                   /*model = SingleModelDb.getInstance().getModelListPersonne();
+                   model.selectAll();
+                   m_tablePersonne.setItems(model.getOb());
+                   System.err.println("FOCUS");*/
+                }
+            });
+          
+        
     }    
 
     public void OnDeleteFiche(){
@@ -232,7 +246,28 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                 this.OnDeleteFiche();      
             }else if(event.getSource() == m_buttonUpdate){
                 this.OnModifierFiche();
+            }else if(event.getSource() == m_buttonSearch){
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/entity/DialogSearchView.fxml"));
+                    BorderPane pane = loader.load();
+                    Scene scene = new Scene(pane);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setTitle("Recherche");
+                    stage.showAndWait();
+                    if(stage.getUserData().equals("CANCEL"))
+                        model.selectAll();
+                    // ajout du modelPersonne dans la Db
+                    // refresh
+                    m_tablePersonne.refresh();
+                   
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLPersonneController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+                
+            
             
         }
     }

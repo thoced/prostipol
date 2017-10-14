@@ -14,8 +14,8 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="imageAdd.svg">
+   sodipodi:docname="imageAdd.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -26,12 +26,12 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="328.8921"
+     inkscape:cx="295.05199"
      inkscape:cy="852.64688"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:snap-bbox="true"
+     inkscape:snap-bbox="false"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -49,7 +49,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,11 +57,19 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:#00fd00;stroke:#0a8483;stroke-width:0.9;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.60000003"
-       d="M 84.666666,43.000001 H 95.249999 V 64.166667 H 116.41667 V 74.75 H 95.249999 V 95.916667 H 84.666666 V 74.75 H 63.499999 V 64.166667 h 21.166667 z"
+       style="fill:#00fd00;fill-opacity:1;stroke:#0a8483;stroke-width:0.89999998;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.60000002;stroke-opacity:1"
+       d="M 25.135417,27.125001 H 35.71875 V 48.291667 H 56.885421 V 58.875 H 35.71875 V 80.041667 H 25.135417 V 58.875 H 3.96875 V 48.291667 h 21.166667 z"
        id="path4506"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="15.1"
        inkscape:export-ydpi="15.1" />
+    <path
+       style="fill:#df0033;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 95.250001,70.78125 v 6.614583 H 148.16667 V 70.78125 Z"
+       id="path4526"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\thonon\Documents\NetBeansProjects\slickNew\ProstiPol\src\ressources\imageDel.png"
+       inkscape:export-xdpi="114.12168"
+       inkscape:export-ydpi="114.12168" />
   </g>
 </svg>

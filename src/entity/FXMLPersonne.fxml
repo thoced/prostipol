@@ -29,6 +29,7 @@
           <Button fx:id="m_buttonAdd" mnemonicParsing="false" />
             <Button fx:id="m_buttonUpdate" mnemonicParsing="false" text="Modifier" />
             <Button fx:id="m_buttonDel" mnemonicParsing="false" text="Supprimer" />
+            <Button fx:id="m_buttonSearch" mnemonicParsing="false" text="Rechercher" />
         </items>
       </ToolBar>
    </top>
