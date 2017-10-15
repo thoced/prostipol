@@ -6,9 +6,9 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="679.0" prefWidth="1092.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entity.FXMLPersonneController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="679.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entity.FXMLPersonneController">
    <center>
-      <TableView fx:id="m_tablePersonne" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="639.0" prefWidth="903.0">
+      <TableView fx:id="m_tablePersonne" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="639.0" prefWidth="1198.0">
         <columns>
           <TableColumn fx:id="m_columnNom" prefWidth="126.99996948242188" text="Nom" />
           <TableColumn fx:id="m_columnPrenom" minWidth="7.0" prefWidth="111.0" text="Prenom" />
@@ -20,6 +20,7 @@
             <TableColumn fx:id="m_columnDateEncodage" prefWidth="147.0" text="Date d'encodage" />
             <TableColumn fx:id="m_columnDateUpdate" prefWidth="140.0" text="Date de mise à jour" />
             <TableColumn fx:id="m_columnStatut" prefWidth="103.0" text="Statut" />
+            <TableColumn fx:id="m_columnMemo" prefWidth="75.0" text="Memo" />
         </columns>
       </TableView>
    </center>

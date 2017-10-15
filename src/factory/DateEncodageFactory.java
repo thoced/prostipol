@@ -15,7 +15,7 @@ import javafx.scene.control.TableCell;
  */
 public class DateEncodageFactory extends TableCell{
 
-    private  DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private  DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm:ss");
     
     @Override
     protected void updateItem(Object item, boolean empty) {

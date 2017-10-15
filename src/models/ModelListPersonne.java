@@ -84,6 +84,7 @@ public class ModelListPersonne extends ModelContainerBase{
                 st.setId(result.getInt("t_personnes.ref_statut"));
                 st.setStatut(result.getString("t_statut.statut"));
                 mp.setStatut(st);
+                mp.setMemo(result.getString("t_personnes.memo"));
                 ob.add(mp);
             }
         } catch (SQLException ex) {
@@ -166,7 +167,9 @@ public class ModelListPersonne extends ModelContainerBase{
                     + "ref_origine = ?,"
                     + "date_naissance = ?,"
                     + "date_update = ?,"
-                    + "ref_statut = ? WHERE id = ?";
+                    + "ref_statut = ?, "
+                    + "memo = ? "
+                    + "WHERE id = ?";
                     
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, personne.getNom());
@@ -178,7 +181,8 @@ public class ModelListPersonne extends ModelContainerBase{
             ps.setDate(7, java.sql.Date.valueOf(personne.getDateNaissance()));
             ps.setTimestamp(8, personne.getDateUpdate());
             ps.setInt(9, personne.getStatut().getId());
-            ps.setInt(10, personne.getId());
+            ps.setString(10, personne.getMemo());
+            ps.setInt(11, personne.getId());
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ModelListPersonne.class.getName()).log(Level.SEVERE, null, ex);
@@ -221,6 +225,7 @@ public class ModelListPersonne extends ModelContainerBase{
                 st.setId(result.getInt("t_personnes.ref_statut"));
                 st.setStatut(result.getString("t_statut.statut"));
                 mp.setStatut(st);
+                mp.setMemo(result.getString("t_personnes.memo"));
                 ob.add(mp);
             }
         } catch (SQLException ex) {

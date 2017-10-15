@@ -8,6 +8,7 @@ package models;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -36,6 +37,20 @@ public class ModelPersonne extends ModelBase{
     private final ObjectProperty<Timestamp> dateEncodage = new SimpleObjectProperty<>();
     private final ObjectProperty<Timestamp> dateUpdate = new SimpleObjectProperty<>();
     private final ObjectProperty<ModelStatut> statut = new SimpleObjectProperty<>();
+    private final StringProperty memo = new SimpleStringProperty();
+
+    public String getMemo() {
+        return memo.get();
+    }
+
+    public void setMemo(String value) {
+        memo.set(value);
+    }
+
+    public StringProperty memoProperty() {
+        return memo;
+    }
+    
 
     public ModelStatut getStatut() {
         return statut.get();
@@ -183,5 +198,12 @@ public class ModelPersonne extends ModelBase{
     public ObjectProperty nationaliteProperty() {
         return nationalite;
     }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return nom.getValue() + " " + prenom.getValue() + " (" + dateNaissance.getValue().format(df) + ")";
+    }
  
+    
 }

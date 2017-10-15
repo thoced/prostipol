@@ -7,6 +7,7 @@ package entity;
 
 import factory.DateEncodageFactory;
 import factory.LocalDateFactory;
+import factory.MemoFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -88,6 +89,8 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
     public TableColumn<ModelPersonne,LocalDate> m_columnDateUpdate;
     @FXML
     public TableColumn<ModelPersonne,String> m_columnStatut;
+    @FXML
+    public TableColumn<ModelPersonne,String> m_columnMemo;
     
     @FXML
     public Button m_buttonAdd;
@@ -167,7 +170,7 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
          m_columnDateNaissance.setCellFactory(p->new LocalDateFactory());
          m_columnDateEncodage.setCellFactory(p->new DateEncodageFactory());
          m_columnDateUpdate.setCellFactory(p->new DateEncodageFactory());
-         
+         m_columnMemo.setCellFactory(p->new MemoFactory());
          
         
     }    
