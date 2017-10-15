@@ -5,6 +5,8 @@
  */
 package entity;
 
+import factory.DateEncodageFactory;
+import factory.LocalDateFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -34,6 +36,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewFocusModel;
@@ -49,6 +52,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
+import static javax.management.Query.value;
 import models.ModelListPersonne;
 import models.ModelPersonne;
 import models.ModelSexe;
@@ -157,7 +162,13 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
                    System.err.println("FOCUS");*/
                 }
             });
-          
+         // factory
+        
+         m_columnDateNaissance.setCellFactory(p->new LocalDateFactory());
+         m_columnDateEncodage.setCellFactory(p->new DateEncodageFactory());
+         m_columnDateUpdate.setCellFactory(p->new DateEncodageFactory());
+         
+         
         
     }    
 
@@ -271,6 +282,8 @@ public class FXMLPersonneController implements Initializable,EventHandler<Action
             
         }
     }
+
+  
 
     
     
