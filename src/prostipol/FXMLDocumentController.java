@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
@@ -46,6 +50,8 @@ import models.SingleModelDb;
  */
 public class FXMLDocumentController implements Initializable {
     
+    @FXML
+    private BorderPane m_root;
     @FXML 
     public SplitPane m_splitVertical;
     
@@ -136,6 +142,14 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    
+    @FXML
+    public void OnFermeture(){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText("Fermeture");
+        alert.setContentText("Etes-vous sûr de vouloir fermer l'application ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK)
+            m_root.getScene().getWindow().hide();
+    }
     
 }
